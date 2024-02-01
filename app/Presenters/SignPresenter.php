@@ -17,7 +17,7 @@ final class SignPresenter extends Nette\Application\UI\Presenter
 
         $form->addSubmit('send', 'Přihlásit');
 
-        $form->onSuccess[] = [$this, 'signInFormSucceeded']; // Oprava: použití pole pro zadání metody
+        $form->onSuccess[] = [$this, 'signInFormSucceeded'];
         return $form;
     }
 

@@ -54,7 +54,6 @@
                 x = rows[i].getElementsByTagName("td")[column];
                 y = rows[i + 1].getElementsByTagName("td")[column];
 
-                // Převedení textového timestampu na časový údaj pro porovnání
                 let timestampX = Date.parse(x.innerText);
                 let timestampY = Date.parse(y.innerText);
 

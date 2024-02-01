@@ -16,7 +16,7 @@ final class HomePresenter extends Nette\Application\UI\Presenter
     protected function createComponentPostForm(): Nette\Application\UI\Form
     {
         $form = new Nette\Application\UI\Form;
-        // ... (implementace formuláře pro přidání/upravení příspěvku)
+
         return $form;
     }
 
@@ -25,16 +25,15 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         $userId = $this->getUser()->getId();
 
         if ($userId === null) {
-            // Uživatel není přihlášen, můžete definovat chování pro nepřihlášeného uživatele
             return $this->facade->getPublicArticles();
         }
 
         if ($this->getUser()->isInRole('admin')) {
-            return $this->facade->getPublicArticles(); // Všechny příspěvky pro admina
+            return $this->facade->getPublicArticles();
         } elseif ($this->getUser()->isInRole('redaktor')) {
-            return $this->facade->getUserArticles($userId); // Příspěvky redaktora
+            return $this->facade->getUserArticles($userId);
         } else {
-            return $this->facade->getPublicArticles(); // Všechny příspěvky pro ostatní uživatele
+            return $this->facade->getPublicArticles();
         }
     }
 
