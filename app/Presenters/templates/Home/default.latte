@@ -1,0 +1,78 @@
+{block content}
+    <h1>Články</h1>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .datum-column {
+            width: 75px;
+            cursor: pointer;
+        }
+    </style>
+
+    <table>
+         <thead>
+            <tr>
+                <th>Název článku</th>
+                <th>Obsah</th>
+                <th class="datum-column" onclick="sortTable('created_at')">Datum</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $posts as $post}
+                <tr>
+                    <td><h3>{$post->title}</h3></td>
+                    <td>{$post->content|truncate:256}</td>
+                    <td class="datum-column">{$post->created_at|date:'j. n. Y'}</td>
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+
+    <a n:href="Edit:create" n:if="$user->isLoggedIn()">Vytvořit příspěvek</a>
+
+    <script>
+    function sortTable(column) {
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector("table");
+        switching = true;
+
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("tr");
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("td")[column];
+                y = rows[i + 1].getElementsByTagName("td")[column];
+
+                // Převedení textového timestampu na časový údaj pro porovnání
+                let timestampX = Date.parse(x.innerText);
+                let timestampY = Date.parse(y.innerText);
+
+                if (timestampX < timestampY) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+</script>
+
+
+
+
+{/block}
