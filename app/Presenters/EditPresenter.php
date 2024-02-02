@@ -31,23 +31,21 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             ->setRequired();
 
         $form->addSubmit('send', 'Uložit a publikovat');
-        $form->onSuccess[] = [$this, 'postFormSucceeded'];  // Oprava: použití pole pro zadání metody
+        $form->onSuccess[] = [$this, 'postFormSucceeded'];
 
         return $form;
     }
 
-    public function postFormSucceeded(Form $form, array $data): void  // Oprava: správný typ parametrů
+    public function postFormSucceeded(Form $form, array $data): void
     {
         $postId = $this->getParameter('postId');
-        $userId = $this->getUser()->getId(); // Získá ID aktuálně přihlášeného uživatele
+        $userId = $this->getUser()->getId();
 
-        // Přidávání nebo aktualizace příspěvku s uživatelským ID
         if ($postId) {
             $post = $this->database
                 ->table('posts')
                 ->get($postId);
 
-            // Zkontrolujte, zda příspěvek patří aktuálně přihlášenému uživateli
             if ($post->user_id !== $userId) {
                 $this->error('Nemáte oprávnění editovat tento příspěvek.');
             }
